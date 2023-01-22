@@ -10,7 +10,7 @@ class Command(BaseCommand):
             {'category_name': 'Алкогольная продукция', 'description': 'Алкогольная продукция'}
         ]
         products = [
-            {'product_name': 'йогурт', 'unit_price': '70', 'description': 'Вкусный йогурт','category_name': 'Молочная продукция', 'date_of_last_changes': '2023-01-19'  }
+            {'product_name': 'йогурт', 'unit_price': '70', 'description': 'Вкусный йогурт','category.category_name': 'Молочная продукция', 'date_of_last_changes': '2023-01-19'  }
         ]
         product_list = []
         category_list = []

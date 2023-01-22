@@ -22,12 +22,12 @@
             <tbody>
             {% for product in product_list %}
                 <tr>
-                    <th scope="row">{{ product.category.id }}</th>
+                    <th scope="row">{{ product.id }}</th>
                     <td>{{ product.product_name }}</td>
                     <td>{{ product.description|truncatechars:100 }}</td>
 {#                    <td class="image"><img src="{% mediapath product.image %}" alt="" border=5 height=140 width=210></td>#}
                     <td class="image"><img src="{{ product.image|mediapath }}" alt="" border=5 height=140 width=210></td>
-                    <td>{{ product.category_name }}</td>
+                    <td>{{ product.category.category_name }}</td>
                     <td>{{ product.unit_price }}</td>
                     <td>{{ product.date_of_creation }}</td>
                     <td>{{ product.date_of_last_changes }}</td>
