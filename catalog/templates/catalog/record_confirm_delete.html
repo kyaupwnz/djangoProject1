@@ -1,0 +1,22 @@
+{% extends 'catalog/base.html' %}
+{% load template_filter %}
+<!DOCTYPE html>
+{% block content %}
+    <div class="row">
+        <div class="col-4">
+            <div class="card">
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <p>
+                            Вы действительно хотите удалить карточку товара {{ product.product_name }}?
+                        </p>
+                        <a class="btn btn-primary" href="{% url 'catalog:record_list' %}">Передумал</a>
+                        <button class="btn btn-danger" type="submit">Уверен</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

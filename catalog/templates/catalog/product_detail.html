@@ -1,0 +1,32 @@
+{% extends 'catalog/base.html' %}
+{% load template_filter %}
+<!DOCTYPE html>
+{% block content %}
+    <div class="row">
+        <div class="col-4">
+            <div class="card">
+                <div class="card-body">
+                    <table class="table">
+                        <tr>
+                            <td>Название товара</td>
+                            <td>{{ product.product_name }}</td>
+                        </tr>
+                          <tr>
+                            <td>Описание товара</td>
+                            <td>{{ product.description}}</td>
+                        </tr>
+                          <tr>
+                            <td>Цена товара</td>
+                            <td>{{ product.unit_price }}</td>
+                        </tr>
+                          <tr>
+                            <td>Категория</td>
+                            <td>{{ product.category.category_name }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

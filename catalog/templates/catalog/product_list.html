@@ -1,0 +1,41 @@
+{% extends 'catalog/base.html' %}
+{% load template_filter %}
+<!DOCTYPE html>
+{% block content %}
+    <body>
+        <a class="nav-link" href="{% url 'catalog:create' %}">Создать карточку товара</a>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Наименование товара</th>
+                <th scope="col">Описание товара</th>
+                <th scope="col">Изображение товара</th>
+                <th scope="col">Категория товара</th>
+                <th scope="col">Цена товара</th>
+                <th scope="col">Дата создания</th>
+                <th scope="col">Дата последнего изменения</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for product in product_list %}
+                <tr>
+                    <td>{{ product.pk }}</td>
+                    <td><a href="{% url 'catalog:detail' product.pk %}">{{ product.product_name }}</a></td>
+                    <td>{{ product.description|truncatechars:100 }}</td>
+{#                    <td class="image"><img src="{% mediapath product.image %}" alt="" border=5 height=140 width=210></td>#}
+                    <td class="image"><img src="{{ product.image|mediapath }}" alt="" border=5 height=140 width=210></td>
+                    <td>{{ product.category.category_name }}</td>
+                    <td>{{ product.unit_price }}</td>
+                    <td>{{ product.date_of_creation }}</td>
+                    <td>{{ product.date_of_last_changes }}</td>
+                    <td>
+                        <a class="btn btn-info" href="{% url 'catalog:update' product.pk %}">Update</a>
+                        <a class="btn btn-danger" href="{% url 'catalog:delete' product.pk %}">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </body>
+{% endblock %}

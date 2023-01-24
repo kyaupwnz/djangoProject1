@@ -1,4 +1,8 @@
 from django.db import models
+from django.urls import reverse
+from django.template.defaultfilters import slugify
+
+
 
 # Create your models here.
 NULLABALE = {'blank': True, 'null': True}
@@ -35,5 +39,27 @@ class Product(models.Model):
        return f'{self.id} {self.product_name} {self.unit_price} {self.category.category_name}'
 
 
+class Record(models.Model):
+    title = models.CharField(max_length=50, verbose_name='Заголовок')
+    slug = models.SlugField(max_length=50, null=False, verbose_name="URL")
+    content = models.TextField(verbose_name='Содержимое', **NULLABALE)
+    image = models.ImageField(upload_to='Wlog_image/', verbose_name='Изображение', **NULLABALE)
+    date_of_creation = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
+    is_public = models.BooleanField(default=True, verbose_name='Опубликованно')
+    views_counter = models.IntegerField(default=0, verbose_name='Счетчик просмотров')
 
+    class Meta:
+        verbose_name = 'Статья'
+        verbose_name_plural = 'Статьи'
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse('catalog:record_detail', kwargs={'slug': self.slug})
+
+    def save(self, *args, **kwargs): # new
+        if not self.slug:
+            self.slug = slugify(self.title)
+        return super().save(*args, **kwargs)
 

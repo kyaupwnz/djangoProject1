@@ -1,0 +1,20 @@
+{% extends 'catalog/base.html' %}
+{% load template_filter %}
+{% block content %}
+<h1>Статьи</h1>
+{% for record in record_list %}
+  <ul>
+    <li><a href="{{ record.get_absolute_url }}">{{ record.title }}</a></li>
+          <p>Просмотры: {{record.views_counter}}</p>
+          <p>{{record.content}}</p>
+          <image src="/media/Wlog_image/{{record.image}}" width=500 height="300"></image><br>
+  </ul>
+{% endfor %}
+    <tr>
+    <a href="{% url 'catalog:create_record' %}">Создать</a>
+
+{#    <a href="{% url 'catalog:record_detail' %}" class="btn btn-info">Статья</a><br>#}
+{#    <a href="{% url 'catalog:delete_record' %}" class="btn btn-info">Удалить</a><br>#}
+
+
+{% endblock %}
