@@ -58,26 +58,13 @@ class RecordListView(ListView):
 class RecordCreateView(CreateView):
     model = Record
     fields = ('title', 'content', 'image')
-    prepopulated_fields = {"slug": ("title",)}
     success_url = reverse_lazy('catalog:record_list')
-
-    def form_valid(self, form):
-        record = form.save(commit=False)
-        record.slug = slugify(record.title)
-        record.save()
-        return super().form_valid(form)
 
 
 class RecordUpdateView(UpdateView):
     model = Record
     fields = ('title', 'content', 'image')
     success_url = reverse_lazy('catalog:record_detail')
-
-    def form_valid(self, form):
-        record = form.save(commit=False)
-        record.slug = slugify(record.title)
-        record.save()
-        return super().form_valid(form)
 
 
 class RecordDeleteView(DeleteView):
@@ -88,16 +75,11 @@ class RecordDeleteView(DeleteView):
 class RecordDetailView(DetailView):
     model = Record
 
-    def __init__(self, **kwargs):
-        super().__init__(kwargs)
-        self.object = None
-
-    def get(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        self.object.views_counter += 1
-        self.object.save()
-        context = self.get_context_data(object=self.object)
-        return self.render_to_response(context)
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+        obj.views_counter += 1
+        obj.save()
+        return obj
 
 
 

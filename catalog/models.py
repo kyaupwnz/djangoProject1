@@ -1,5 +1,4 @@
 from django.db import models
-from django.urls import reverse
 from django.template.defaultfilters import slugify
 
 
@@ -24,7 +23,6 @@ class Product(models.Model):
     description = models.TextField(verbose_name='Описание')
     image = models.ImageField(upload_to='product/', verbose_name='Изображение', **NULLABALE)
     category = models.ForeignKey(Category, verbose_name='Категория', on_delete=models.CASCADE)
-    #category_name = models.CharField(max_length=50, verbose_name='Название категории')
     unit_price = models.IntegerField(verbose_name='Цена товара')
     date_of_creation = models.DateField(auto_now=True, verbose_name='Дата создания')
     date_of_last_changes = models.DateTimeField(verbose_name='Дата последнего изменения')
@@ -54,9 +52,6 @@ class Record(models.Model):
 
     def __str__(self):
         return self.title
-
-    def get_absolute_url(self):
-        return reverse('catalog:record_detail', kwargs={'slug': self.slug})
 
     def save(self, *args, **kwargs): # new
         if not self.slug:

@@ -6,34 +6,7 @@
     <h1>{{ record.title }}</h1>
     <h3>{{ record.content }}</h3>
     <h3>{{ record.date_of_creation }}</h3>
-    <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:update_record' record.slug %}">Обновить</a>
-    <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:delete_record' record.slug %}">Удалить</a>
+    <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:update_record' object.slug %}">Обновить</a>
+    <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:delete_record' object.slug %}">Удалить</a>
 </div>
-{#    <div class="row">#}
-{#        <div class="col-4">#}
-{#            <div class="card">#}
-{#                <div class="card-body">#}
-{#                    <table class="table">#}
-{#                        <tr>#}
-{#                            <td>Заголовок</td>#}
-{#                            <td>{{ record.title}}</td>#}
-{#                        </tr>#}
-{#                          <tr>#}
-{#                            <td>Содержимое</td>#}
-{#                            <td>{{ record.content}}</td>#}
-{#                        </tr>#}
-{#                          <tr>#}
-{#                            <td>Опубликованно/td>#}
-{#                            <td>{{ record.is_public}}</td>#}
-{#                        </tr>#}
-{#                          <tr>#}
-{#                            <td>Изображение</td>#}
-{#                            <td>{{ record.image }}</td>#}
-{#                        </tr>#}
-{#                    </table>#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
-{#    </div>#}
-
 {% endblock %}
