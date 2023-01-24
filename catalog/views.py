@@ -54,6 +54,9 @@ class ProductDetailView(DetailView):
 class RecordListView(ListView):
     model = Record
 
+    def get_queryset(self):
+        return Record.objects.filter(is_public=True)
+
 
 class RecordCreateView(CreateView):
     model = Record
@@ -66,10 +69,16 @@ class RecordUpdateView(UpdateView):
     fields = ('title', 'content', 'image')
     success_url = reverse_lazy('catalog:record_detail')
 
+    def get_success_url(self):
+        current_slug = self.kwargs['slug']
+        return reverse_lazy('catalog:record_detail', kwargs={'slug': current_slug})
+
 
 class RecordDeleteView(DeleteView):
     model = Record
     success_url = reverse_lazy('catalog:record_list')
+
+
 
 
 class RecordDetailView(DetailView):
