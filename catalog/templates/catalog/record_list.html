@@ -7,7 +7,7 @@
     <li><a href="{% url 'catalog:record_detail' object.slug %}">{{ object.title }}</a></li>
           <p>Просмотры: {{object.views_counter}}</p>
           <p>{{object.content}}</p>
-          <image src="/media/Wlog_image/{{record.image}}" width=500 height="300"></image><br>
+          <image src="/media/Wlog_image/{{object.image}}" width=500 height="300"></image><br>
   </ul>
 {% endfor %}
     <tr>

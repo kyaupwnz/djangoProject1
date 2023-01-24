@@ -1,5 +1,6 @@
 from django.db import models
-from django.template.defaultfilters import slugify
+from django.urls import reverse
+from pytils.translit import slugify
 
 
 
@@ -52,6 +53,7 @@ class Record(models.Model):
 
     def __str__(self):
         return self.title
+
 
     def save(self, *args, **kwargs): # new
         if not self.slug:
