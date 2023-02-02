@@ -3,7 +3,6 @@ from django.urls import reverse
 from pytils.translit import slugify
 
 
-
 # Create your models here.
 NULLABALE = {'blank': True, 'null': True}
 
@@ -19,6 +18,7 @@ class Category(models.Model):
     def __str__(self):
         return f'{self.id} {self.category_name}'
 
+
 class Product(models.Model):
     product_name = models.CharField(max_length=50, verbose_name='Продукт')
     description = models.TextField(verbose_name='Описание')
@@ -28,14 +28,26 @@ class Product(models.Model):
     date_of_creation = models.DateField(auto_now=True, verbose_name='Дата создания')
     date_of_last_changes = models.DateTimeField(verbose_name='Дата последнего изменения')
 
-
     class Meta:
         verbose_name = 'Продукт'
         verbose_name_plural = 'Продукты'
 
-
     def __str__(self):
        return f'{self.id} {self.product_name} {self.unit_price} {self.category.category_name}'
+
+
+class Version(models.Model):
+    ACTIVE = 'active'
+    INACTIVE = 'inactive'
+    STATUS = (
+        ('active', 'активная'),
+        ('inactive', 'неактивная')
+    )
+
+    product = models.ForeignKey(Product, verbose_name='Продукт', on_delete=models.CASCADE)
+    version_number = models.FloatField(default=1, verbose_name='Номер версии')
+    version_name = models.CharField(max_length=50, verbose_name='Название версии')
+    version_status = models.CharField(choices=STATUS, default=INACTIVE, verbose_name='текущая версия', max_length=10)
 
 
 class Record(models.Model):
@@ -53,7 +65,6 @@ class Record(models.Model):
 
     def __str__(self):
         return self.title
-
 
     def save(self, *args, **kwargs): # new
         if not self.slug:
