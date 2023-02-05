@@ -1,0 +1,4 @@
+{% autoescape off %}
+    Пожалуйста перейдите по ссылке, чтобы закончить регистрацию.
+    http://{{ domain }}{% url 'users:email_verify' uidb64=uid token=token %}
+{% endautoescape %}

@@ -1,0 +1,14 @@
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Verify Email
+From: webmaster@localhost
+To: razlionx@yandex.ru
+Date: Sun, 05 Feb 2023 05:53:29 -0000
+Message-ID: <167557640937.43044.4771953886635179604@kyaupwnz-HP-Notebook>
+
+
+    Пожалуйста перейдите по ссылке, чтобы закончить регистрацию.
+    http://127.0.0.1:8000/users/verify_email/MTg/bj4wd5-e905c71730308d25c2dbfefcde66af8e/
+
+-------------------------------------------------------------------------------

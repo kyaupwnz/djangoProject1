@@ -1,10 +1,11 @@
+from django.conf import settings
 from django.db import models
 from django.urls import reverse
 from pytils.translit import slugify
 
 
 # Create your models here.
-NULLABALE = {'blank': True, 'null': True}
+NULLABLE = {'blank': True, 'null': True}
 
 
 class Category(models.Model):
@@ -22,12 +23,12 @@ class Category(models.Model):
 class Product(models.Model):
     product_name = models.CharField(max_length=50, verbose_name='Продукт')
     description = models.TextField(verbose_name='Описание')
-    image = models.ImageField(upload_to='product/', verbose_name='Изображение', **NULLABALE)
+    image = models.ImageField(upload_to='product/', verbose_name='Изображение', **NULLABLE)
     category = models.ForeignKey(Category, verbose_name='Категория', on_delete=models.CASCADE)
     unit_price = models.IntegerField(verbose_name='Цена товара')
     date_of_creation = models.DateField(auto_now=True, verbose_name='Дата создания')
     date_of_last_changes = models.DateTimeField(verbose_name='Дата последнего изменения')
-
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, **NULLABLE)
     class Meta:
         verbose_name = 'Продукт'
         verbose_name_plural = 'Продукты'
@@ -53,8 +54,8 @@ class Version(models.Model):
 class Record(models.Model):
     title = models.CharField(max_length=50, verbose_name='Заголовок')
     slug = models.SlugField(max_length=50, default='', null=False, verbose_name="URL")
-    content = models.TextField(verbose_name='Содержимое', **NULLABALE)
-    image = models.ImageField(upload_to='Wlog_image/', verbose_name='Изображение', **NULLABALE)
+    content = models.TextField(verbose_name='Содержимое', **NULLABLE)
+    image = models.ImageField(upload_to='Wlog_image/', verbose_name='Изображение', **NULLABLE)
     date_of_creation = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     is_public = models.BooleanField(default=True, verbose_name='Опубликованно')
     views_counter = models.IntegerField(default=0, verbose_name='Счетчик просмотров')

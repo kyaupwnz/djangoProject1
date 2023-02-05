@@ -1,0 +1,10 @@
+{% extends 'users/base.html' %}
+
+{% block content %}
+    <div class="row">
+    <p>
+        Ваша ссылка не корректна, попробуйте еще раз</p>
+    <a href="{% url 'users:password_reset' %}"></a>
+    </div>
+
+{% endblock %}
