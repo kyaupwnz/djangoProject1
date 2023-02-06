@@ -119,12 +119,14 @@ class ResetPasswordView(PasswordResetView):
     email_template_name = 'users/password_reset_email.html'
     template_name = 'users/reset_password.html'
     success_url = reverse_lazy('users:reset_success')
+    extra_email_context = {'password_real': None}
 
     def form_valid(self, form):
         if form.is_valid():
             email = form.cleaned_data.get('email')
             password = User.objects.make_random_password(length=10)
             # form.save()
+            self.extra_email_context = {'password_real': password}
             user = User.objects.filter(email=email).first()
             user.set_password(password)
             user.save()
