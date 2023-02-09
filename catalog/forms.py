@@ -30,7 +30,7 @@ class ProductForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = Product
         fields = '__all__'
-        # exclude = ['owner']
+        exclude = ['owner']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -48,8 +48,14 @@ class ProductForm(StyleFormMixin, forms.ModelForm):
                 raise forms.ValidationError('Продукт с таким названием невозможно добавить')
         return cleaned_data
 
+class ModeratorProductForm(StyleFormMixin, forms.ModelForm):
+
+    class Meta:
+        model = Product
+        fields = ['owner', 'category', 'description']
 
 class VersionForm(StyleFormMixin, forms.ModelForm):
+
     class Meta:
         model = Version
         fields = '__all__'

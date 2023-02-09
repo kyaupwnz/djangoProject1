@@ -6,7 +6,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView, D
 from django.urls import reverse_lazy, reverse
 from pytils.translit import slugify
 
-from catalog.forms import ProductForm, VersionForm
+from catalog.forms import ProductForm, VersionForm, ModeratorProductForm
 from catalog.models import Product, Record, Version
 
 
@@ -68,12 +68,23 @@ class ProductUpdateView(UserPassesTestMixin, UpdateView):
         product = self.get_object()
         return product.owner == self.request.user or self.request.user.has_perms(perm_list=["catalog.change_public_status", "catalog.change_description", "catalog.change_category"])
 
+
+class ModeratorProductUpdateView(UserPassesTestMixin, UpdateView):
+    model = Product
+    form_class = ModeratorProductForm
+    success_url = reverse_lazy('catalog:detail')
+    template_name = 'catalog/moderator_product_form.html'
+
+    def test_func(self):
+        return self.request.user.has_perms(perm_list=['catalog.set_is_public', 'catalog.change_description_product', 'catalog.change_category_product'])
+
+
+
 class ProductDeleteView(DeleteView):
     model = Product
     success_url = reverse_lazy('catalog:product_list')
 
-def toggle_publish(request, pk):
-    pass
+
 class ProductUpdateWithVersionView(UserPassesTestMixin, UpdateView):
     model = Product
     form_class = ProductForm

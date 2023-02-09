@@ -30,8 +30,11 @@
                     <td>{{ product.date_of_creation }}</td>
                     <td>{{ product.date_of_last_changes }}</td>
                     <td>
-                        {% if owner == object.user %}
+                        {% if user == product.owner %}
                         <a class="btn btn-info" href="{% url 'catalog:update' product.pk %}">Update</a>
+                        {% endif %}
+                        {% if perms.catalog.change_description_product %}
+                        <a class="btn btn-info" href="{% url 'catalog:moderate' product.pk %}">Moderate</a>
                         {% endif %}
                         <a class="btn btn-danger" href="{% url 'catalog:delete' product.pk %}">Delete</a>
                     </td>
