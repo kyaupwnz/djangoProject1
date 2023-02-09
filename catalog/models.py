@@ -29,9 +29,16 @@ class Product(models.Model):
     date_of_creation = models.DateField(auto_now=True, verbose_name='Дата создания')
     date_of_last_changes = models.DateTimeField(verbose_name='Дата последнего изменения')
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, **NULLABLE)
+    is_public = models.BooleanField(default=False, verbose_name='Опубликованно')
+
     class Meta:
         verbose_name = 'Продукт'
         verbose_name_plural = 'Продукты'
+        permissions = [
+            ('set_is_public', 'Can change public status'),
+            ('change_description_product', 'Can change description'),
+            ('change_category_product', 'Can change category')
+        ]
 
     def __str__(self):
        return f'{self.id} {self.product_name} {self.unit_price} {self.category.category_name}'

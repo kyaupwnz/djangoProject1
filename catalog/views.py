@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.db import transaction
 from django.forms import inlineformset_factory
 from django.shortcuts import render
@@ -32,6 +33,13 @@ def contacts(request):
 class ProductListView(ListView):
     model = Product
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        if self.request.user.has_perm('catalog.set_is_public'):
+            return queryset
+
+        return queryset.filter(is_public=True)
+
 
 class ProductCreateView(CreateView):
     model = Product
@@ -39,24 +47,51 @@ class ProductCreateView(CreateView):
     form_class = ProductForm
     success_url = reverse_lazy('catalog:product_list')
 
+    def form_valid(self, form):
+        if form.is_valid():
+            self.object = form.save(commit=False)
+            self.object.owner = self.request.user
+            self.object.save()
+        return super().form_valid(form)
 
-class ProductUpdateView(UpdateView):
+
+class ProductUpdateView(UserPassesTestMixin, UpdateView):
     model = Product
     # fields = '__all__'
     form_class = ProductForm
     success_url = reverse_lazy('catalog:product_list')
 
+    def get_queryset(self):
+        return Product.objects.filter(owner=self.request.user)
+
+    def test_func(self):
+        product = self.get_object()
+        return product.owner == self.request.user or self.request.user.has_perms(perm_list=["catalog.change_public_status", "catalog.change_description", "catalog.change_category"])
 
 class ProductDeleteView(DeleteView):
     model = Product
     success_url = reverse_lazy('catalog:product_list')
 
-
-class ProductUpdateWithVersionView(UpdateView):
+def toggle_publish(request, pk):
+    pass
+class ProductUpdateWithVersionView(UserPassesTestMixin, UpdateView):
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy('catalog:detail')
     template_name = 'catalog/product_form.html'
+
+    def get_queryset(self):
+        return Product.objects.filter(owner=self.request.user)
+
+    def test_func(self):
+        product = self.get_object()
+        if product.owner == self.request.user:
+            return True
+        elif self.request.user.has_perms(perm_list=['set_is_public', 'change_description_product', 'change_category_product']):
+            return True
+
+        # return product.owner == self.request.user or self.request.user.has_perms(
+        #     perm_list=['set_is_public', 'change_description_product', 'change_category_product'])
 
     def get_success_url(self):
         return reverse('catalog:detail', args=[self.object.pk])

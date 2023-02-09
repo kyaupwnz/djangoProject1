@@ -92,6 +92,8 @@ class MyPasswordChangeView(PasswordChangeView):
 
 
 User = get_user_model()
+
+
 class EmailVerify(View):
 
     def get(self, request, uidb64, token):
@@ -141,6 +143,5 @@ class ResetPasswordView(PasswordResetView):
 
 class ResetSuccessView(PasswordResetCompleteView):
     template_name = 'users/password_reset_success.html'
-
 
 
