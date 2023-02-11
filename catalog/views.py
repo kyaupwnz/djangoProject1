@@ -10,10 +10,10 @@ from pytils.translit import slugify
 
 from catalog.forms import ProductForm, VersionForm, ModeratorProductForm
 from catalog.models import Product, Record, Version, Category
-from users.utils import cache_category
+from catalog.utils import cache_category
 
 
-# Create your views here.
+# Create your views here
 def index(request):
     return render(request, 'catalog/index.html')
 
@@ -141,7 +141,7 @@ class CategoryListView(ListView):
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
-        context_data['cached_categories'] = cache_category(self)
+        context_data['cached_categories'] = cache_category()
         return context_data
 
 
