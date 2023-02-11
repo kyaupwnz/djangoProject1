@@ -1,0 +1,27 @@
+{% extends 'catalog/base.html' %}
+{% load template_filter %}
+<!DOCTYPE html>
+{% block content %}
+    <body>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Наименование категории</th>
+                <th scope="col">Описание категории</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for category in category_list %}
+                <tr>
+                    <td>{{ category.pk }}</td>
+                    <td>{{ category.category_name }}</td>
+                    <td>{{ category.description|truncatechars:100 }}</td>
+                    <td>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </body>
+{% endblock %}

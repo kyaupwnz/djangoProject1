@@ -9,23 +9,27 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-
+import os
 from pathlib import Path
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+dot_env = os.path.join(BASE_DIR, '.env')
+load_dotenv(dotenv_path=dot_env)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
+ENV_TYPE = os.getenv('ENV_TYPE', 'local')
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-7p=k+v=*+xrh!v-s(-9ut8!op(1!(&1a=lpzt06i^6aaz3s&$)'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = (os.getenv('DEBUG', 'False') == 'True')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS', default='*')]
 
 
 # Application definition
@@ -144,8 +148,17 @@ EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
 # EMAIL_HOST_USER = 'fuckup@oscarbot.ru'
 # EMAIL_HOST_PASSWORD = 'AsTSNVv7pun9'
-EMAIL_HOST_USER = 'regareg198@yandex.ru'
-EMAIL_HOST_PASSWORD = 'uujfafiznkigoqpr'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_USE_SSL = True
-
 DEFAULT_FROM_EMAIL = 'My Domain <regareg198@yandex.ru>'
+
+CACHE_ENABLED = os.getenv('CACHE_ENABLED')
+if CACHE_ENABLED:
+    CACHES = {
+        'default':
+            {
+                'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+                'LOCATION': 'redis://127.0.0.1:6379'
+            }
+    }

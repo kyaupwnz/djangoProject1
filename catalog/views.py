@@ -1,4 +1,6 @@
+from django.conf import settings
 from django.contrib.auth.mixins import UserPassesTestMixin
+from django.core.cache import cache
 from django.db import transaction
 from django.forms import inlineformset_factory
 from django.shortcuts import render
@@ -7,7 +9,8 @@ from django.urls import reverse_lazy, reverse
 from pytils.translit import slugify
 
 from catalog.forms import ProductForm, VersionForm, ModeratorProductForm
-from catalog.models import Product, Record, Version
+from catalog.models import Product, Record, Version, Category
+from users.utils import cache_category
 
 
 # Create your views here.
@@ -79,7 +82,6 @@ class ModeratorProductUpdateView(UserPassesTestMixin, UpdateView):
         return self.request.user.has_perms(perm_list=['catalog.set_is_public', 'catalog.change_description_product', 'catalog.change_category_product'])
 
 
-
 class ProductDeleteView(DeleteView):
     model = Product
     success_url = reverse_lazy('catalog:product_list')
@@ -132,6 +134,15 @@ class ProductUpdateWithVersionView(UserPassesTestMixin, UpdateView):
 
 class ProductDetailView(DetailView):
     model = Product
+
+
+class CategoryListView(ListView):
+    model = Category
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        context_data['cached_categories'] = cache_category(self)
+        return context_data
 
 
 class RecordListView(ListView):
